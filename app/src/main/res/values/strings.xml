@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Ahorcado</string>
+    <string name="hint_nueva_letra">Nueva letra</string>
+    <string name="bt_enviar">Enviar</string>
+    <string name="bt_reset">Reset</string>
+    <string name="ganado">¡¡ HAS GANADO !!</string>
+    <string name="perdido">¡¡ HAS PERDIDO !!</string>
+    <string name="errores_text">Errores:</string>
+
+</resources>

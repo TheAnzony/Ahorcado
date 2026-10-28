@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+<!-- GuideLines -->
+    <!-- Horizontal -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glh1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glh2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.40"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glh3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glh4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1"
+        />
+
+    <!-- Vertical -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glv1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1"
+        />
+
+
+
+    <!-- Fila 1 -->
+    <EditText
+        android:id="@+id/etLetra"
+        android:layout_width="0dp" android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:hint="@string/hint_nueva_letra"
+        android:maxLength="1"
+        android:padding="8dp"
+        android:textAlignment="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnEnviar"
+        app:layout_constraintBottom_toTopOf="@id/glh1"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnEnviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_enviar"
+        android:layout_marginEnd="35dp"
+        app:layout_constraintEnd_toStartOf="@id/btnReset"
+        app:layout_constraintBaseline_toBaselineOf="@id/etLetra"
+        style="@style/botones"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnReset"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/bt_reset"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/etLetra"
+        style="@style/botones"
+        />
+
+    <!-- Fila 2: casillas (se rellenan desde código) -->
+    <TextView
+        android:id="@+id/tvLetra1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/glh1"
+        app:layout_constraintBottom_toTopOf="@id/glh2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvLetra2"
+        style="@style/tv_letras"
+        />
+
+    <TextView
+        android:id="@+id/tvLetra2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/glh1"
+        app:layout_constraintBottom_toTopOf="@id/glh2"
+        app:layout_constraintStart_toEndOf="@id/tvLetra1"
+        app:layout_constraintEnd_toStartOf="@id/tvLetra3"
+        style="@style/tv_letras"
+        />
+
+    <TextView
+        android:id="@+id/tvLetra3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/glh1"
+        app:layout_constraintBottom_toTopOf="@id/glh2"
+        app:layout_constraintStart_toEndOf="@id/tvLetra2"
+        app:layout_constraintEnd_toStartOf="@id/tvLetra4"
+        style="@style/tv_letras"
+        />
+
+    <TextView
+        android:id="@+id/tvLetra4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/glh1"
+        app:layout_constraintBottom_toTopOf="@id/glh2"
+        app:layout_constraintStart_toEndOf="@id/tvLetra3"
+        app:layout_constraintEnd_toStartOf="@id/tvLetra5"
+        style="@style/tv_letras"
+        />
+
+
+    <TextView
+        android:id="@+id/tvLetra5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/glh1"
+        app:layout_constraintBottom_toTopOf="@id/glh2"
+        app:layout_constraintStart_toEndOf="@id/tvLetra4"
+        app:layout_constraintEnd_toStartOf="@id/glv2"
+        style="@style/tv_letras"
+
+        />
+
+    <!-- Fila 3 -->
+
+    <TextView
+        android:id="@+id/tv_errores"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_fallos"
+        app:layout_constraintTop_toBottomOf="@id/glh2"
+        app:layout_constraintBottom_toTopOf="@id/glh3"
+        android:text="@string/errores_text"
+        style="@style/tv_errores"
+        />
+
+    <TextView
+        android:id="@+id/tv_fallos"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toEndOf="@id/tv_errores"
+        app:layout_constraintEnd_toStartOf="@+id/glv2"
+        app:layout_constraintTop_toBottomOf="@id/glh2"
+        app:layout_constraintBottom_toTopOf="@id/glh3"
+        android:text=""
+        style="@style/tv_fallos"
+        />
+
+
+    <!-- Fila 4 -->
+
+    <TextView
+        android:id="@+id/tv_intentos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_fallos"
+        app:layout_constraintTop_toBottomOf="@id/glh3"
+        app:layout_constraintBottom_toTopOf="@id/glh4"
+        style="@style/tv_intentos"
+        />
+
+    <ImageView
+        android:id="@+id/imagen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toEndOf="@id/tv_intentos"
+        app:layout_constraintTop_toBottomOf="@id/glh3"
+        app:layout_constraintBottom_toTopOf="@id/glh4"
+        app:layout_constraintEnd_toStartOf="@+id/glv2"
+        android:src="@drawable/ahorcado_0"
+        android:layout_marginEnd="6dp"
+        />
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
