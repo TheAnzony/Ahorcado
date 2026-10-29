@@ -7,26 +7,45 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.savedstate.serialization.saved
 import com.example.ahorcado.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding : ActivityMainBinding
+
+    //PARTIDA ACTIVA = TRUE
     private var partidaActiva = false
+
+    //ERROES COMETIDOS
     private var errores = 0
+
+    //ARRAY CON LAS IMAGENES
     private lateinit var imagenes : IntArray
 
+    //LETRAS MOSTRADAS EN LA PANTALLA
     private var mostradas = 0
 
+    //GUARDA LAS LETRAS ACERTADAS
+    private var reveladas = CharArray(5){' '}
+
+    //GUARDA LOS FALLOS COMETIDOS
+    private var fallosAcumulados = CharArray(6){' '}
+
+
+    //INTENTOS TOTALES
     private val intentos = 6
 
+    //PALABRAS DEL AHORCADO
     private val palabras = arrayOf(
         "PERRO", "LIBRO", "PLAYA", "FRUTA", "MUNDO",
         "CIELO", "PIANO", "VERDE", "NUBES", "TIGRE"
     )
 
+    //PALABRA SELECCIONADA PARA LA PARTIDA
     private lateinit var palabra : String
 
+    //CASILLAS DONDE SE MUESTRAN LAS LETRAS
     private lateinit var letras : List<TextView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,13 +62,72 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("errores",errores)
+        outState.putInt("mostradas",mostradas)
+        outState.putString("palabra",palabra)
+        outState.putCharArray("reveladas",reveladas)
+        outState.putIntArray("imagenes",imagenes)
+        outState.putBoolean("activa", partidaActiva)
+        outState.putCharArray("fallosAcumulados",fallosAcumulados)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        errores = savedInstanceState.getInt("errores")
+        mostradas = savedInstanceState.getInt("mostradas")
+        palabra = savedInstanceState.getString("palabra") ?: palabra
+        reveladas = savedInstanceState.getCharArray("reveladas") ?: reveladas
+        imagenes = savedInstanceState.getIntArray("imagenes") ?: imagenes
+        partidaActiva = savedInstanceState.getBoolean("activa")
+        fallosAcumulados = savedInstanceState.getCharArray("fallosAcumulados") ?: fallosAcumulados
+
+
+        binding.imagen.setImageResource(imagenes[errores])
+        letras = listOf(
+            binding.tvLetra1,
+            binding.tvLetra2,
+            binding.tvLetra3,
+            binding.tvLetra4,
+            binding.tvLetra5
+        )
+
+        for (i in letras.indices){
+
+            if (reveladas[i] != ' '){
+                letras[i].text = reveladas[i].toString()
+            }
+        }
+
+        val res = intentos-errores
+        binding.tvIntentos.text = "Te quedan $res intentos"
+
+        for (i in fallosAcumulados.indices){
+            if (fallosAcumulados[i] != ' '){
+                binding.tvFallos.append(fallosAcumulados[i] + " ")
+            }
+        }
+    }
+
+
     private fun setMyListener(){
         binding.btnReset.setOnClickListener(this)
         binding.btnEnviar.setOnClickListener(this)
     }
 
-
+    //COMIENZA EL JUEGO EN SU PRIMER ESTADO E INICIALIZANDO TODOS LAS VARIABLES
     private fun empezarPartida(){
+
+        palabra = palabras.random() //SELECCIONAMOS UNA PALABRA ALEATROIA DE LAS POSIBLES PALABRAS
+
+        //ESTADO POR DEFECTO AL EMPEZAR LA PARTIDA
+        errores = 0
+        partidaActiva = true
+        mostradas = 0
+        binding.tvIntentos.text = "Te quedan $intentos intentos"
+
+        //METEMOS TODAS LA IMAGENES EN EL ARRAY
         imagenes = intArrayOf(
             R.drawable.ahorcado_0,
             R.drawable.ahorcado_1,
@@ -60,8 +138,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.drawable.ahorcado_6
         )
 
-        binding.imagen.setImageResource(imagenes[0])
+        //MOSTRAMOS LA PRIMERA IMAGEN
+        binding.imagen.setImageResource(imagenes[errores])
 
+        //METEMOS DENTRO DE LETRAS TODOS LOS TEXT VIEW DONDE SE MOSTRARAN LAS LETRAS
         letras = listOf(
             binding.tvLetra1,
             binding.tvLetra2,
@@ -70,31 +150,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.tvLetra5
         )
 
-        palabra = palabras.random()
-        errores = 0
-        partidaActiva = true
-        mostradas = 0
-        binding.tvIntentos.text = "Te quedan $intentos intentos"
-
     }
 
+    //RESETEA LA PARTIDA
     private fun reiniciar(){
         limpiarLetras()
         limpiarErrores()
         empezarPartida()
     }
 
+    //LIMPIA EL TEXT VIEW DE LAS LETRAS ERRONEAS INTRODUCIDAS
     private fun limpiarErrores(){
         binding.tvFallos.text = ""
+        fallosAcumulados = CharArray(6){' '}
     }
 
     //Limpia las letras mostradas
     private fun limpiarLetras(){
         letras.forEach { it.text = "" }
+        reveladas = CharArray(5){' '}
     }
 
 
-
+    //REACCION DE LOS BOTONES
     override fun onClick(boton: View?){
 
         if (boton == null) return
@@ -121,9 +199,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     if (letra == palabra[i] && letras[i].text.isEmpty()){
                         letras[i].text = letra.toString()
                         mostradas++
+                        reveladas[i] = letra
                     }
                 }
             }else{
+                fallosAcumulados[errores] = letra
                 errores++
                 binding.imagen.setImageResource(imagenes[errores])
                 val res = intentos-errores
@@ -139,6 +219,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    //COMPRUEBA SI HAS PERDIDO O GANADO
     private fun comprobarPartida(){
         if (errores == intentos){
             partidaActiva = false
